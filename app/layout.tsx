@@ -36,7 +36,7 @@ session
   session :any
 }) {
   
-  console.log(session)
+  // console.log(session)
   return (
     <html lang="en">
       <body className={inter.className}>

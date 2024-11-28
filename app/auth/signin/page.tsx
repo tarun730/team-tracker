@@ -6,16 +6,29 @@ import { Label } from '@/components/ui/label';
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { ToastTitle } from '@radix-ui/react-toast';
+import { useSession } from 'next-auth/react';
+import { useEffect } from "react";
+
 
 export default function SignIn() {
+  const { data: session } = useSession();
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
+  useEffect(() => {
+    // If a session exists, redirect to the dashboard
+    if (session) {
+      router.push("/dashboard");
+    }
+  }, [session, router]);
   const handleSubmit = async (e: React.FormEvent) => {
+   
     e.preventDefault();
     try {
+  
       const result = await signIn('credentials', {
         email,
         password,
@@ -23,6 +36,7 @@ export default function SignIn() {
       });
 
       if (result?.error) {
+       <ToastTitle>hello</ToastTitle>
         setError('Invalid credentials');
         return;
       }
@@ -30,6 +44,7 @@ export default function SignIn() {
       router.push('/dashboard');
       router.refresh();
     } catch (error) {
+      console.log(error)
       setError('An error occurred');
     }
   };

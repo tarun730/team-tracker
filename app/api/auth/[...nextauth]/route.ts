@@ -53,13 +53,17 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     async redirect({ url, baseUrl }) {
-      // Prevent redirect loop by ensuring a valid destination
-      return '/dashboard';
-    },
+      // Prevent redirect loop and ensure a valid destination
+      // if (url && new URL(url, baseUrl).origin === baseUrl) {
+      //   return url; // safe redirect to the requested URL
+      // }
+      return `${baseUrl}/dashboard`; // fallback to dashboard if the URL is invalid
+    }
+    
   },
-  // pages: {
-  //   signIn: '/auth/signin', // custom sign-in page path
-  // },
+  pages: {
+    signIn: '/auth/signin', // custom sign-in page path
+  },
   session: {
     strategy: 'jwt', // JWT session
   },

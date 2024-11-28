@@ -34,6 +34,13 @@ model Team {
   tasks     Task[]   @relation("TeamTasks")
 }
 
+
+enum Priority {
+  Low
+  Medium
+  High
+}
+
 model Task {
   id          String   @id @default(cuid())
   title       String
@@ -48,4 +55,5 @@ model Task {
   userId      String?
   team        Team?    @relation("TeamTasks", fields: [teamId], references: [id])
   teamId      String?
+  priority    Priority   
 }

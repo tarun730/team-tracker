@@ -1,14 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface Task {
-  // id: string;
-  // title: string;
   description?: string;
-  // status: string;
-  timeSpent: number;
   Id: number;         
-  title: string;          
-  // description: string;   
+  title: string;            
   assignedTo: string;     
   assignedBy: string;     
   status: 'Pending' | 'In Progress' | 'Completed'; // The current status of the task
@@ -46,6 +41,10 @@ const taskSlice = createSlice({
     setTasks: (state, action: PayloadAction<Task[]>) => {
       state.tasks = action.payload;
     },
+    addTask:(state,action)=>{
+      state.tasks = [...state.tasks, action.payload];
+
+    },
     // setActiveTask: (state, action: PayloadAction<Task | null>) => {
     //   state.activeTask = action.payload;
     // },
@@ -58,6 +57,7 @@ const taskSlice = createSlice({
     //     state.activeTask.timeSpent = action.payload.timeSpent;
     //   }
     // },
+
     isTaskCompleted:(state,action)=>{
       const task = state.tasks.find((task) => task.Id === action.payload); // Find task by ID
       if (task) {
@@ -84,5 +84,5 @@ const taskSlice = createSlice({
   }
 });
 
-export const { setTasks,setLoading ,isTaskCompleted} = taskSlice.actions;
+export const { setTasks,setLoading ,isTaskCompleted,addTask} = taskSlice.actions;
 export default taskSlice.reducer;

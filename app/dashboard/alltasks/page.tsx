@@ -43,7 +43,7 @@ const MyComponent = () => {
             try {
                 if (tasks.length === 0) {
                     dispatch(fetchDetailTask());
-                }
+                    }
 
             } finally {
                 dispatch(setLoading(false)); // Stop loading

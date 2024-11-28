@@ -9,6 +9,7 @@ import { signOut, useSession } from "next-auth/react";
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Avatar } from '@/components/ui/avatar';
+import { useRouter } from 'next/navigation';
 
 
 export default function RootLayout({
@@ -17,22 +18,25 @@ export default function RootLayout({
     children: React.ReactNode,
 }) {
     const { data: session, status } = useSession();
+    const router = useRouter();
+
 
     if (status === "loading") {
         return <div>Loading...</div>;
     }
 
     if (!session) {
-        return <div>You are not logged in.</div>;
+        return  router.push('/');
     }
     return (
         <>
             <div className="flex items-center gap-2 justify-between mr-6 p-6 ">
                 <Link   href='/dashboard'> <Button>dashboard</Button> </Link>
                 <Link  href='/dashboard/alltasks'><Button>all tasks</Button></Link>
+                <Link  href='/dashboard/addtask'><Button>add tasks</Button></Link>
                 <div className="flex items-center gap-2 justify-end mr-6 p-6 ">
                    <Avatar> <img className="size-full rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=2&amp;w=256&amp;h=256&amp;q=80" alt="" /></Avatar><span className="font-medium">Welcome, {session.user?.name} </span>
-                    <button className='inline-flex justify-center rounded-lg text-sm font-semibold py-2.5 px-4 bg-slate-900 text-white hover:bg-slate-700 ml-8' onClick={() => signOut()}>Sign out</button>
+                    <button className='inline-flex justify-center rounded-lg text-sm font-semibold py-2.5 px-4 bg-slate-900 text-white hover:bg-slate-700 ml-8' onClick={() => signOut({ callbackUrl: '/' })}>Sign out</button>
                 </div>
             </div>
             <Providers>{children}</Providers>
